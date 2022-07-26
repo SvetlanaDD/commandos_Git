@@ -6,13 +6,13 @@ public class Main {
         String[] products = {"Хлеб", "Молоко", "Гречка"};
         int[] prices = {30, 85, 70};
         int[] cart = new int[products.length];
-        int sumProducts = 0;
         Scanner scanner = new Scanner(System.in);
 
         printProducts(products, prices);
 
         while (true) {
-            System.out.println("Выберите товар и количество или введите `end`.");
+            System.out.println("Выберите товар и количество (для уменьшения товара - отрицательные числа, " +
+                    "для обнуления - 0) или введите `end`.");
 
             String input = scanner.nextLine();
 
@@ -43,18 +43,21 @@ public class Main {
                 continue;
             }
 
-            if (productCount <= 0) {
-                System.out.println("Не верное количество!");
-                continue;
+            if (productCount < 0) {
+                if ((cart[productNumber] + productCount)<0){
+                    System.out.println("В корзине всего " + cart[productNumber] + " шт. товара `" +
+                            products[productNumber] + "`, хотите удалить товар из корзины - введите 0.");
+                    continue;
+                }
+            }
+            if (productCount == 0){
+                cart[productNumber] = 0;
             }
 
-            int currentPrice = prices[productNumber];
-
-            sumProducts += currentPrice * productCount;
             cart[productNumber] += productCount;
         }
 
-        printCart(products, prices, cart, sumProducts);
+        printCart(products, prices, cart);
     }
 
     public static void printProducts(String[] products, int[] prices) {
@@ -65,12 +68,14 @@ public class Main {
         }
     }
 
-    public static void printCart(String[] products, int[] prices, int[] cart, int sumProducts) {
+    public static void printCart(String[] products, int[] prices, int[] cart) {
+        int sumProducts = 0;
         System.out.println("Ваша корзина:");
 
         for (int i = 0; i < products.length; i++) {
             if (cart[i] > 0) {
                 System.out.println(products[i] + " " + cart[i] + " шт " + prices[i] + " руб/шт " + (prices[i] * cart[i]) + " руб в сумме");
+                sumProducts = sumProducts + (prices[i] * cart[i]);
             }
         }
 
