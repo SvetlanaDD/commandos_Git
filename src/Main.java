@@ -44,13 +44,13 @@ public class Main {
             }
 
             if (productCount < 0) {
-                if ((cart[productNumber] + productCount)<0){
+                if ((cart[productNumber] + productCount) < 0) {
                     System.out.println("В корзине всего " + cart[productNumber] + " шт. товара `" +
                             products[productNumber] + "`, хотите удалить товар из корзины - введите 0.");
                     continue;
                 }
             }
-            if (productCount == 0){
+            if (productCount == 0) {
                 cart[productNumber] = 0;
             }
 
