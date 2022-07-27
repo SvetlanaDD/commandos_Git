@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -14,7 +13,8 @@ public class Main {
         printProducts(products, prices);
 
         while (true) {
-            System.out.println("Выберите товар и количество или введите `end`.");
+            System.out.println("Выберите товар и количество (для уменьшения товара - отрицательные числа, " +
+                    "для обнуления - 0) или введите `end`.");
 
             String input = scanner.nextLine();
 
@@ -45,9 +45,15 @@ public class Main {
                 continue;
             }
 
-            if (productCount <= 0) {
-                System.out.println("Не верное количество!");
-                continue;
+            if (productCount < 0) {
+                if ((cart[productNumber] + productCount) < 0) {
+                    System.out.println("В корзине всего " + cart[productNumber] + " шт. товара `" +
+                            products[productNumber] + "`, хотите удалить товар из корзины - введите 0.");
+                    continue;
+                }
+            }
+            if (productCount == 0) {
+                cart[productNumber] = 0;
             }
 
             cart[productNumber] += productCount;
