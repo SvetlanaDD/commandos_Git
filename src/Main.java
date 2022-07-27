@@ -1,9 +1,11 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
         String[] products = {"Хлеб", "Молоко", "Гречка"};
+        String[] products3For2 = {"Гречка"};
         int[] prices = {30, 85, 70};
         int[] cart = new int[products.length];
         Scanner scanner = new Scanner(System.in);
@@ -57,7 +59,8 @@ public class Main {
             cart[productNumber] += productCount;
         }
 
-        printCart(products, prices, cart);
+        int[] sums = calcCart(products, products3For2, prices, cart);
+        printCart(products, prices, cart, sums);
     }
 
     public static void printProducts(String[] products, int[] prices) {
@@ -68,17 +71,38 @@ public class Main {
         }
     }
 
-    public static void printCart(String[] products, int[] prices, int[] cart) {
-        int sumProducts = 0;
+    public static void printCart(String[] products, int[] prices, int[] cart, int[] sums) {
         System.out.println("Ваша корзина:");
+
+        int sumProducts = 0;
 
         for (int i = 0; i < products.length; i++) {
             if (cart[i] > 0) {
-                System.out.println(products[i] + " " + cart[i] + " шт " + prices[i] + " руб/шт " + (prices[i] * cart[i]) + " руб в сумме");
-                sumProducts = sumProducts + (prices[i] * cart[i]);
+                System.out.println(products[i] + " " + cart[i] + " шт " + prices[i] + " руб/шт " + sums[i] + " руб в сумме");
             }
+
+            sumProducts += sums[i];
         }
 
         System.out.println("Итого: " + sumProducts + " руб");
+    }
+
+    public static int[] calcCart(String[] products, String[] products3For2, int[] prices, int[] cart) {
+        int[] sums = new int[cart.length];
+
+        for (int i = 0; i < cart.length; i++) {
+            int count = cart[i];
+            int price = prices[i];
+            String product = products[i];
+
+            if (Arrays.asList(products3For2).contains(product)) {
+                sums[i] = ((count / 3) * 2 * price) + (count % 3) * price;
+            }
+            else {
+                sums[i] = count * price;
+            }
+        }
+
+        return sums;
     }
 }
